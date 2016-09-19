@@ -113,7 +113,7 @@ def read_config(filename):
 
 def get_time():
     '''What time it is now?'''
-    now = _t.gmtime()
+    now = _t.localtime()
     date = _t.strftime("%Y_%m_%d", now)
     hour_minute = _t.strftime("%H:%M", now)
     return [date, hour_minute]
