@@ -1,0 +1,4 @@
+*.txt
+.last.json
+**/__pycache__
+*.pyc

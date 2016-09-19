@@ -1,0 +1,1 @@
+{"web_page": "http://fajnradio.cz/fajn-radio", "station": "FAJN_RADIO", "interpret_xpath": "//div[@class=\"playsong\"]/a[1]/text()", "song_xpath": "//div[@class=\"playsong\"]/a[2]/text()"}
