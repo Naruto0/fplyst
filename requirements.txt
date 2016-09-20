@@ -1,4 +1,4 @@
 
 PyVirtualDisplay==0.2
-selenium==2.53.6
+selenium==2.60.0
 lxml==3.3.3
