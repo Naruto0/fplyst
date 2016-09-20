@@ -47,6 +47,7 @@
 # it shouldn't be hard for you to easily
 # setup html xpaths to interpret and song.
 #
+# TODO: include selenium to support javascript generated <html>
 
 import sys
 import json
@@ -134,6 +135,8 @@ def save(args):
 def record(*args,**kwargs):
     '''Do we really need to save current song?'''
     playing = fetch(*args,**kwargs)
+    print(playing)
+
     current = read_last(playing[2])
 
     if playing:
