@@ -1,8 +1,22 @@
-#Usage:
+#Fine Playlist scrapper:
 
 ## Story:
 
 Once upon a time (yesterday) someone (me) was riding his car and listening to a radio. It was beautiful rainy day and a beautiful song came to my ears. I said to myself: "Ooh, what a pleasant song." But, (the story always has it's downfalls) either I missed the track info, or the radio didn't show up... so it happened, that it remained just 'a song'. Withou name, without face. And I really wanted to know. Beating around the bushes, going to fight the windmills I came to solution. The funny part is, that when it really started to work, they played my song at the very moment I was debugging it... So i hope it will get use for someone.
+
+## Usage
+
+## To make selenium with firefox work, you have to install Xvfb driver:
+
+```
+$ sudo apt-get install xvfb xfonts-100dpi xfonts-75dpi xfonts-cyrillic xorg dbus-x11
+```
+
+## You have to install requirements.txt
+
+```
+$ pip install -r requirements.txt
+```
 
 ```
 path/to/script$ python3 __main__.py -c <config_file>
@@ -15,7 +29,7 @@ HH:MM    Interpret - Song Name
 #Schedule
 
 To capture whole playlist you have to make crontab schedule or widows/mac equivalent.
-Crontab job should run every minute which is enough to make sure the timing is correct.
+Crontab job should run every minute which is enough to make sure the timing is correct. For each radiostation only the new song will be logged.
 You may like to be sure that the files are saved at the directory, config file is optional:
 
 Run:

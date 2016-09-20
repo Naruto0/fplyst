@@ -61,6 +61,8 @@ with open("requirements.txt", "r") as _req_file:
 
 try:
     from lxml import html
+    from selenium import webdriver
+    from pyvirtualdisplay import Display
 except ImportError:
     if _req:
         print("You have to install modules: ")
