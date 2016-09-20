@@ -35,6 +35,14 @@ contrab -l
 
 If you want to make your own config file, edit the variables which make the _dictionary underneath the imports. in ```main.py``` obviously. (e.g. _station, _url, _interpret_path,  _song_name_path)
 
+For example this bit:
+```
+_station = 'EVROPA2'
+_url = 'https://www.evropa2.cz'
+_interpret_path = '//h3[@class="author"]/text()'
+_song_name_path = '//h4[@class="song"]/text()'
+````
+
 Then run:
 ```
 you@host~/.../fplyst$ python3 -i __main__.py
