@@ -1,4 +1,5 @@
 *.txt
-.last.json
+*.json
 **/__pycache__
 *.pyc
+!config.json

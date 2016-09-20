@@ -53,6 +53,7 @@ import json
 import getopt
 import time as _t
 from requests import get
+from requests.exceptions import ConnectionError, SSLError
 
 with open("requirements.txt", "r") as _req_file:
     _req = _req_file.readlines()    
@@ -69,30 +70,34 @@ except ImportError:
     sys.exit(2)
 
 _config = {}
-_station = 'FAJN_RADIO'
-_url = 'http://fajnradio.cz/fajn-radio'
-_interpret_path = '//div[@class="playsong"]/a[1]/text()'
-_song_name_path = '//div[@class="playsong"]/a[2]/text()'
-_current = []
+
+_station = 'EVROPA2'
+_url = 'https://www.evropa2.cz'
+_interpret_path = '//h3[@class="author"]/text()'
+_song_name_path = '//h4[@class="song"]/text()'
 
 _dictionary = { 'station':_station, 'web_page':_url, \
                 'interpret_xpath':_interpret_path,\
                 'song_xpath':_song_name_path}
 
 def write_last(song):
-    with open('.last.json', 'w') as f:
+    song_info = song[:2]
+    station = song[2]
+    last_name = ".last_on_%s.json"%(station)
+    with open(last_name, 'w') as f:
         json.dump(song, f)
 
-def read_last():
+def read_last(station=None):
     try:
-        with open('.last.json', 'r') as f:
+        last_name = ".last_on_%s.json"%(station)
+        with open(last_name, 'r') as f:
             data = json.load(f)
             return data
     except IOError:
         return []
 
 
-def write_config(filename=None):
+def make_config(filename=None):
     if filename:
         config_file = filename
     else:
@@ -128,14 +133,14 @@ def save(args):
 
 def record(*args,**kwargs):
     '''Do we really need to save current song?'''
-    current = read_last()
     playing = fetch(*args,**kwargs)
+    current = read_last(playing[2])
 
     if playing:
 
-        if current != playing[:2]:
+        if current != playing:
             save(playing+get_time())
-            write_last(playing[:2])
+            write_last(playing)
         else:
             # print("[log-%s]not saving %s - %s"%(get_time()[1],current[0],current[1]))
             pass
@@ -145,9 +150,12 @@ def fetch(web_page, interpret_xpath, song_xpath, station):
 
     try:
         page = get(web_page)
+    except SSLError:
+        page = get(web_page, verify=False) 
     except ConnectionError:
         print ("No internet connection aviable")
         sys.exit(2)
+
 
     tree = html.fromstring(page.content)
 
@@ -155,7 +163,7 @@ def fetch(web_page, interpret_xpath, song_xpath, station):
     song_list = tree.xpath(song_xpath)
 
     if not interpret_list and not song_list:
-        return None
+        return []
     else:
         return [interpret_list[0], song_list[0], station]
 
@@ -179,6 +187,7 @@ def main(argv):
                 sys.exit(2)
             elif opt in('-c','--conf'):
                 read_config(arg)
+            # TODO: unsecure option if https:// connection failing
     else:
         print("Loading default config")
         read_config('config.json')
