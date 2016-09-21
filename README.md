@@ -6,7 +6,7 @@ Once upon a time (yesterday) someone (me) was riding his car and listening to a 
 
 ## Usage
 
-## To make selenium with firefox work, you have to install Xvfb driver:
+## To make work headless firefox with selenium, you have to install Xvfb driver:
 
 ```
 $ sudo apt-get install xvfb xfonts-100dpi xfonts-75dpi xfonts-cyrillic xorg dbus-x11
@@ -18,10 +18,15 @@ $ sudo apt-get install xvfb xfonts-100dpi xfonts-75dpi xfonts-cyrillic xorg dbus
 $ pip install -r requirements.txt
 ```
 
+
+Some pages use generated content model over classic html code, so you can't capture the raw data correctly. In that case, you should use selenium implementation over requests. Options are not mandatory, if -c is ommited default config.json is loaded:
+
 ```
-path/to/script$ python3 __main__.py -c <config_file>
+python3 __main__.py -s -c expres.conf
 ```
+
 Will create 'YYYY_MM_DD_STREAMNAME_PLAYLIST.txt' file which will contain currently captured song:
+
 ```
 HH:MM    Interpret - Song Name
 ```
@@ -79,4 +84,4 @@ If you are familiar enough with xpath syntax, it shouldn't be hard for you to ea
 * sorry, it only parses two-element playlist. In my config the info consists of two ```<a href=>``` tags, so edit accordingly or edit whole code
 * it should work with UTF-8 since i had hard time to convert iy to python3 (i'm joknig, 'twas only minute)
 * does not work on "program" or "shows" when there is no info. If you are willing to help me with anything, pull requests are welcome!
-* It does not work with javascript generated ```<html>``` code however, beware of selenium using another xpath notation than lxml. So when you use one path for lxml, you have to use another when using selenium option.
+* It does work with javascript generated ```<html>``` code. However, selenium uses another xpath notation than lxml. So when you use one path for lxml, you have to use another when using selenium option.
