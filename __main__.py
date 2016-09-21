@@ -179,7 +179,7 @@ def fetch(web_page, interpret_xpath, song_xpath, station):
         if interpret and song:
             return [interpret, song, station]
         else:
-            return []
+            return ['','',station]
 
     else:
         try:
