@@ -78,7 +78,7 @@ In python prompt you either call method without any attributes, which overwrites
 
 # How can i profit?
 
-If you are familiar enough with xpath syntax, it shouldn't be hard for you to easily setup html xpaths to interpret and song.
+If you are familiar enough with xpath syntax, it shouldn't be hard for you to easily setup html xpaths to interpret and song. And have playlist from whatever page you want.
 
 ## notes:
 * sorry, it only parses two-element playlist. In my config the info consists of two ```<a href=>``` tags, so edit accordingly or edit whole code
