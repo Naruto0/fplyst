@@ -79,4 +79,4 @@ If you are familiar enough with xpath syntax, it shouldn't be hard for you to ea
 * sorry, it only parses two-element playlist. In my config the info consists of two ```<a href=>``` tags, so edit accordingly or edit whole code
 * it should work with UTF-8 since i had hard time to convert iy to python3 (i'm joknig, 'twas only minute)
 * does not work on "program" or "shows" when there is no info. If you are willing to help me with anything, pull requests are welcome!
-* does not work with javascript generated ```<html>``` code due to using requests.get() method which is quite limited. Solution would be selenium suport
+* It does not work with javascript generated ```<html>``` code however, beware of selenium using another xpath notation than lxml. So when you use one path for lxml, you have to use another when using selenium option.
