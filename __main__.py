@@ -77,8 +77,8 @@ _selenium = False
 
 _station = 'EVROPA2'
 _url = 'https://www.evropa2.cz'
-_interpret_path = '//h3[@class="author"]/text()'
-_song_name_path = '//h4[@class="song"]/text()'
+_interpret_path = '//h3[@class="author"]'
+_song_name_path = '//h4[@class="song"]'
 
 _dictionary = { 'station':_station, 'web_page':_url, \
                 'interpret_xpath':_interpret_path,\
@@ -156,12 +156,25 @@ def fetch(web_page, interpret_xpath, song_xpath, station):
     global _selenium
 
     if _selenium:
+
+        display = Display(visible=0, size=(800, 600))
+        display.start()
         
         browser = webdriver.Firefox()
         browser.get(web_page)
 
-        interpret = browser.find_element_by_xpath(interpret_xpath).text
-        song = browser.find_element_by_xpath(song_xpath).text
+        try:
+            interpret = browser.find_element_by_xpath(interpret_xpath).text
+        except:
+            interpret = ''
+
+        try:
+            song = browser.find_element_by_xpath(song_xpath).text
+        except:
+            song = ''
+
+        browser.quit()
+        display.stop()
 
         if interpret and song:
             return [interpret, song, station]
@@ -183,7 +196,7 @@ def fetch(web_page, interpret_xpath, song_xpath, station):
         interpret_list = tree.xpath(interpret_xpath)
         song_list = tree.xpath(song_xpath)
 
-        if interpret_list and song_list
+        if interpret_list and song_list:
             return [interpret_list[0], song_list[0], station]
         else:
             return []
@@ -194,6 +207,7 @@ def job(name):
 
 
 def main(argv):
+    read_config('config.json')
     global _selenium
     help_string = '''__main__.py -c <config_file.json> \t -or we load default config.json
 -h \t\t - help
@@ -208,14 +222,10 @@ def main(argv):
             if opt == '-h':
                 print(help_string)
                 sys.exit(2)
-            if opt == '-s':
+            elif opt == '-s':
                 _selenium = True
             elif opt in('-c','--conf'):
                 read_config(arg)
-            # TODO: unsecure option if https:// connection failing
-    else:
-        print("Loading default config")
-        read_config('config.json')
 
     record(**_config)
 
