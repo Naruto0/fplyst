@@ -55,9 +55,10 @@ import getopt
 import time as _t
 from requests import get
 from requests.exceptions import ConnectionError, SSLError
+from typing import List, Dict
 
 with open("requirements.txt", "r") as _req_file:
-    _req = _req_file.readlines()    
+    _req= _req_file.readlines() # type: List[str]
 
 try:
     from lxml import html
@@ -72,26 +73,26 @@ except ImportError:
         print("Unexpected error")
     sys.exit(2)
 
-_config = {}
-_selenium = False
+_config = {} # type: Dict[str, str]
+_selenium = False # type: bool
 
-_station = 'EVROPA2'
-_url = 'https://www.evropa2.cz'
-_interpret_path = '//h3[@class="author"]'
-_song_name_path = '//h4[@class="song"]'
+_station = 'EVROPA2' # type: str
+_url = 'https://www.evropa2.cz' # type: str
+_interpret_path = '//h3[@class="author"]' # type: str
+_song_name_path = '//h4[@class="song"]' # type: str
 
 _dictionary = { 'station':_station, 'web_page':_url, \
                 'interpret_xpath':_interpret_path,\
-                'song_xpath':_song_name_path}
+                'song_xpath':_song_name_path} # type: Dict[str,str]
 
-def write_last(song):
+def write_last(song: List[str]) -> None:
     song_info = song[:2]
     station = song[2]
     last_name = ".last_on_%s.json"%(station)
     with open(last_name, 'w') as f:
         json.dump(song, f)
 
-def read_last(station=None):
+def read_last(station: str=None)-> List[str]:
     try:
         last_name = ".last_on_%s.json"%(station)
         with open(last_name, 'r') as f:
@@ -101,7 +102,7 @@ def read_last(station=None):
         return []
 
 
-def make_config(filename=None):
+def make_config(filename: str=None) -> None:
     if filename:
         config_file = filename
     else:
@@ -111,7 +112,7 @@ def make_config(filename=None):
         json.dump(_dictionary, f)
 
 
-def read_config(filename):
+def read_config(filename: str) -> None:
     try:
         with open(filename, 'r') as f:
             global _config
@@ -120,14 +121,14 @@ def read_config(filename):
         print('bad config file "%s"'%filename)
         sys.exit(2)
 
-def get_time():
+def get_time() -> List[str]:
     '''What time it is now?'''
     now = _t.localtime()
     date = _t.strftime("%Y_%m_%d", now)
     hour_minute = _t.strftime("%H:%M", now)
     return [date, hour_minute]
 
-def save(args):
+def save(args: List) -> None:
     '''We are definitely saving this song.'''
     file_name = "%s_%s_PLAYLIST.txt"%(args[3],args[2])
     string = "%s\t%s - %s\n"%(args[4],args[0],args[1])
@@ -135,12 +136,12 @@ def save(args):
     with open(file_name, "a") as myfile:
         myfile.write(string)
 
-def record(*args,**kwargs):
+def record(*args,**kwargs) -> None:
     '''Do we really need to save current song?'''
     playing = fetch(*args,**kwargs)
     print(playing)
 
-    current = read_last(playing[2])
+    current = read_last(playing[2]) # type: List[str]
 
     if playing:
 
@@ -151,7 +152,7 @@ def record(*args,**kwargs):
             # print("[log-%s]not saving %s - %s"%(get_time()[1],current[0],current[1]))
             pass
 
-def fetch(web_page, interpret_xpath, song_xpath, station):
+def fetch(web_page: str, interpret_xpath: str, song_xpath: str, station: str) -> List[str]:
     '''What are they playing?'''
     global _selenium
 
@@ -201,12 +202,7 @@ def fetch(web_page, interpret_xpath, song_xpath, station):
         else:
             return []
 
-def job(name):
-    print(name)
-    record()
-
-
-def main(argv):
+def main(argv: List[str]) -> None:
     read_config('config.json')
     global _selenium
     help_string = '''__main__.py -c <config_file.json> \t -or we load default config.json
